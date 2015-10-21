@@ -108,14 +108,14 @@ app.game = {
 		// Debugging
 		if(this.debugging){
 			ctx.strokeStyle = "white";
-			ctx.font = "25pt Georgian";
-			ctx.lineWidth =3;
+			ctx.font = "25pt Fascinate";
+			ctx.lineWidth =2;
 			ctx.strokeText("Dt: " + dt.toFixed(3), this.WIDTH - 150, this.HEIGHT - 70);
 		}
 		
 		// Score
 		ctx.fillStyle = "white";
-		ctx.font = "30px courier";
+		ctx.font = "30px Fascinate";
 		ctx.fillText("Score: " + this.score, 30, 50);
 		
 		// Draw a start screen?
@@ -151,7 +151,7 @@ app.game = {
 			ctx.textBaseline = "middle";
 			
 			ctx.fillStyle = "white";
-			ctx.font = "40pt courier";
+			ctx.font = "40pt Fascinate";
 			ctx.fillText("... PAUSED ...", this.WIDTH/2, this.HEIGHT/2);
 		//	this.fillText(this.ctx,"... PAUSED ...", this.WIDTH/2, this.HEIGHT/2, "40pt courier", "white");
 		ctx.restore();
