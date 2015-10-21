@@ -1,7 +1,7 @@
-/*  
+/*
 	Blaster.js
-	will be the generic class to contain all code for 
-	the shooting of bullets. Will track what kind of 
+	will be the generic class to contain all code for
+	the shooting of bullets. Will track what kind of
 	blaster it is and setup and shoot bullets for it.
 */
 
@@ -24,9 +24,9 @@ app.Blaster = function(){
 		this.ready = true;
 		this.dir = dir;
 	}
-	
+
 	var proto = Blaster.prototype;
-	
+
 	proto.shoot = function(ship){
 
 		if(this.ready){
@@ -49,18 +49,19 @@ app.Blaster = function(){
 					console.log("bullet Fired");
 			}
 		}else{
-			console.log("Blaster not ready");
+			console.log("Blaster not ready. " + this.reload.toFixed(2) + " seconds remaining");
 		}
 	}
-	
+
 	proto.update = function(dt){
 		if(!this.ready){
-			this.reload += dt;
-			if(this.reload === this.rate){
+			this.reload += dt*10;
+			if(this.reload >= this.rate){
 				this.ready = true;
+				this.reload = 0;
 			}
 		}
 	}
-	
+
 	return Blaster;
 }();

@@ -9,17 +9,17 @@ var app = app || {};
 
 window.onload = function(){
 	console.log("window has loaded");
-	
+
 /*
 */
-	app.game.entity = app.Entity; 
+	app.game.entity = app.Entity;
 	app.game.enemyCharacter = app.Enemy;
 	app.game.playerCharacter = app.Player;
-	app.game.blaster = app.Blaster; 
-	app.game.bullet = app.Bullet; 
-//	app.game.sound = app.sound; 
-	app.game.input = app.Input; 
-	
+	app.game.blaster = app.Blaster;
+	app.game.bullet = app.Bullet;
+//	app.game.sound = app.sound;
+	app.game.input = app.Input;
+
 	app.game.init();
 }
 

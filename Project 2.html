@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
-	<link href='https://fonts.googleapis.com/css?family=Fascinate' rel='stylesheet' type='text/css'>
 	<style>
 		canvas{
 			border:1px solid gray;
@@ -11,6 +10,25 @@
 			left: 5px;
 			z-index: 1;
 		}
+
+		#button1{
+			font-size: 24pt;
+			border-radius: 15px;
+			position: absolute;
+			top: 150px;
+			left: 270px;
+			z-index: 1;
+		}
+
+		#button1:hover{
+			background-color: #fff;
+		}
+
+		button:focus{
+			outline: 0; /*Hide the blue border*/
+		}
+
+		#audioControls{ display:none; }
 	</style>
 	<title>Project 2</title>
 </head>
@@ -31,9 +49,9 @@
 		<script src='javaScript/loader.js'></script>
 		<script src='javaScript/sound.js'></script>
 		<script src='javaScript/main.js'></script>
-		<script src='javascript/emitter.js'></script> 
+		<script src='javascript/emitter.js'></script>
 		<button id="button1">Click Me</button>
-		
+
 		<section id="audioControls">
 			<audio id="bgAudio" src="media/background.mp3" controls loop></audio>
 			<audio id="effectAudio" controls></audio>
