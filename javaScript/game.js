@@ -194,7 +194,7 @@ app.game = {
 		for(var i = this.enemies.length-1; i >= 0; i--){
 			var enemy = this.enemies[i];
 			//debugger;
-			enemy.update(this.dt);
+			enemy.update(dt);
 			/*
 			if(enemy.checkEdges(this.WIDTH,this.HEIGHT)){
 				this.enemies.splice(i,1);
@@ -212,7 +212,7 @@ app.game = {
 		var now,fps;
 		now = (+new Date);
 		fps = 1000 / (now - this.lastTime);
-		//fps = clamp(fps, 12, 60);
+		fps = clamp(fps, 12, 60);
 		fps = Math.max(12,Math.min(60,fps));
 		this.lastTime = now;
 		return 1/fps;
