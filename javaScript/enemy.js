@@ -23,7 +23,7 @@ app.Enemy = function(){
 	}
 
 	Enemy.prototype.update = function(dt){
-		debugger;
+	//	debugger;
 		switch(this.moveDir){
 			case "left":
 				this.move(dt);
@@ -57,7 +57,7 @@ app.Enemy = function(){
 				this.x += this.speed * dt;
 			break;
 		}
-		console.log("Position: (" + Math.floor(this.x) + ", " + Math.floor(this.y) + ")");
+
 	}
 
 	Enemy.prototype.draw = function(ctx){

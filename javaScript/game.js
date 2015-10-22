@@ -18,7 +18,7 @@ app.game = {
 	lastTime: 0, // calculating Delta Time
 	animationID: 0,
 	paused: false,
-	debugging: true,
+	debugging: false,
 	score: 0,
 	roundCount: 0,
 
@@ -36,8 +36,15 @@ app.game = {
 	bullets: [],
 	enemyNumber: 0,
 	enemies: [],
+	gameState: undefined,
+	GAME_STATE: Object.freeze({
+		MENU: 0,
+		PLAYING: 1,
+		GAME_END: 2,
+	}),
 
-
+	/*	Initializes the game variables
+		  and launches the update loop */
 	init: function(){
 		window.addEventListener("keyup",this.checkDebug);
 		this.canvas = document.querySelector('canvas');
@@ -49,39 +56,54 @@ app.game = {
 
 		this.enemies.push(new this.enemyCharacter(this.WIDTH/2,15, 10));
 
+		this.gameState = 1; // Controls which state the program starts in
+
 		console.log("game's init successfully called.");
 		this.update();
 	},
 
+	// The game's loop, updates all objects and draws them to the screen
 	update: function(){
 		this.animationID = requestAnimationFrame(this.update.bind(this));
-
-		if(this.paused){
-			this.drawPauseScreen(this.ctx);
-			return;
-		}
-
 		// setting dt
 		var dt = this.calculateDeltaTime();
 
-	// Updates
+		// Menu State Logic
+		if(this.gameState === this.GAME_STATE.MENU){
+			this.drawHUD(this.ctx);
+		} else
+		// Game Loop Logic
+		if(this.gameState === this.GAME_STATE.PLAYING){
+			if(this.paused){
+				this.drawPauseScreen(this.ctx);
+				return;
+			}
 
-		// moves and checks for collisions
-		this.moveBullets(dt);
-		this.moveEntities(dt);
 
-	// Draw Calls
+			// Updates
 
-		// background
-		this.ctx.fillStyle = "black";
-		this.ctx.fillRect(0,0,this.WIDTH,this.HEIGHT);
+				// moves and checks for collisions
+			this.moveBullets(dt);
+			this.moveEntities(dt);
 
-		// Entities
-		this.drawEntities(this.ctx);
-		this.drawBullets(this.ctx);
+			// Draw Calls
 
-		// HUD
-		this.drawHUD(this.ctx, dt);
+				// background
+			this.ctx.fillStyle = "black";
+			this.ctx.fillRect(0,0,this.WIDTH,this.HEIGHT);
+
+				// Entities
+			this.drawEntities(this.ctx);
+			this.drawBullets(this.ctx);
+
+				// HUD
+			this.drawHUD(this.ctx, dt);
+		} else
+		// End Screen Logic
+		if(this.gameState === this.GAME_STATE.GAME_END){
+			this.drawHUD(this.ctx,dt);
+		}
+
 	},
 
 	drawEntities: function(ctx){
@@ -102,23 +124,28 @@ app.game = {
 
 	drawHUD: function(ctx, dt){
 		ctx.save();
-		//debugger;
-		// Debugging
-		if(this.debugging){
-			ctx.strokeStyle = "white";
-			ctx.font = "25pt Fascinate";
-			ctx.lineWidth =2;
-			ctx.strokeText("Dt: " + dt.toFixed(3), this.WIDTH - 150, this.HEIGHT - 70);
+		switch(this.gameState){
+			case this.GAME_STATE.MENU:
+			// Draw a start screen?
+			break;
+			case this.GAME_STATE.PLAYING:
+				// Debugging
+				if(this.debugging){
+					ctx.strokeStyle = "white";
+					ctx.font = "25pt Fascinate";
+					ctx.lineWidth =2;
+					ctx.strokeText("Dt: " + dt.toFixed(3), this.WIDTH - 150, this.HEIGHT - 70);
+				}
+
+				// Score
+				ctx.fillStyle = "white";
+				ctx.font = "30px Fascinate";
+				ctx.fillText("Score: " + this.score, 30, 50);
+			break;
+			case this.GAME_STATE.GAME_END:
+			// Draw an end game screen
+			break;
 		}
-
-		// Score
-		ctx.fillStyle = "white";
-		ctx.font = "30px Fascinate";
-		ctx.fillText("Score: " + this.score, 30, 50);
-
-		// Draw a start screen?
-		// Draw an end game screen
-
 		ctx.restore();
 	},
 
@@ -143,12 +170,17 @@ app.game = {
 	// draws a pause screen
 	drawPauseScreen: function(ctx){
 		ctx.save();
-			ctx.fillStyle = "black";
+			var grad = ctx.createRadialGradient(this.WIDTH/2,this.HEIGHT/2,10,
+																					this.WIDTH/2,this.HEIGHT/2,800);
+			grad.addColorStop(0,"#D9D9D9");
+			grad.addColorStop(1,"#000000");
+
+			ctx.fillStyle = grad;
 			ctx.fillRect(0,0,this.WIDTH,this.HEIGHT);
 			ctx.textAlign = "center";
 			ctx.textBaseline = "middle";
 
-			ctx.fillStyle = "white";
+			ctx.fillStyle = "black";
 			ctx.font = "40pt Fascinate";
 			ctx.fillText("... PAUSED ...", this.WIDTH/2, this.HEIGHT/2);
   	//this.fillText(this.ctx,"... PAUSED ...", this.WIDTH/2, this.HEIGHT/2, "40pt courier", "white");
