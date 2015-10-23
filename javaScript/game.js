@@ -56,7 +56,7 @@ app.game = {
 
 		this.enemies.push(new this.enemyCharacter(this.WIDTH/2,15, 10));
 
-		this.gameState = 1; // Controls which state the program starts in
+		this.gameState = 0; // Controls which state the program starts in
 
 		console.log("game's init successfully called.");
 		this.update();
@@ -127,6 +127,30 @@ app.game = {
 		switch(this.gameState){
 			case this.GAME_STATE.MENU:
 			// Draw a start screen?
+			ctx.save();
+
+				//	Setting up the gradient
+				var grad = ctx.createLinearGradient(0,0,0,this.HEIGHT);
+				grad.addColorStop(0,"#2299DD");
+				grad.addColorStop(1,"#0F24AC");
+				// Background
+				ctx.fillStyle = grad;
+				ctx.fillRect(0,0,this.WIDTH,this.HEIGHT);
+				// Text
+				ctx.textAlign = "center";
+				ctx.textBaseline = "middle";
+				ctx.fillStyle = "#DB880C";
+				ctx.font = "40pt Fascinate";
+				ctx.fillText("Bullet Swell!",this.WIDTH/2,200);
+				ctx.font = "25pt Fascinate";
+				ctx.fillText("A basic bullet hell by: Ian Hampson",this.WIDTH/2,300);
+
+				//debugger; NEED TO FIX HOW BUTTONS ARE HANDELED AND DRAWN
+				document.getElementById("startButton").style.top = 350;
+				document.getElementById("startButton").style.left = this.WIDTH/2;
+				document.getElementById("startButton").style.display = "block";
+
+			ctx.restore();
 			break;
 			case this.GAME_STATE.PLAYING:
 				// Debugging
