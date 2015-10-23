@@ -126,8 +126,8 @@ app.game = {
 		ctx.save();
 		switch(this.gameState){
 			case this.GAME_STATE.MENU:
-			// Draw a start screen?
-			ctx.save();
+				// Draw a start screen?
+				ctx.save();
 
 				//	Setting up the gradient
 				var grad = ctx.createLinearGradient(0,0,0,this.HEIGHT);
@@ -149,8 +149,7 @@ app.game = {
 				document.getElementById("startButton").style.top = 350;
 				document.getElementById("startButton").style.left = this.WIDTH/2;
 				document.getElementById("startButton").style.display = "block";
-
-			ctx.restore();
+				ctx.restore();
 			break;
 			case this.GAME_STATE.PLAYING:
 				// Debugging
@@ -167,7 +166,26 @@ app.game = {
 				ctx.fillText("Score: " + this.score, 30, 50);
 			break;
 			case this.GAME_STATE.GAME_END:
-			// Draw an end game screen
+				// Draw an end game screen
+				ctx.save();
+				//	Setting up the gradient
+				var grad = ctx.createLinearGradient(0,0,0,this.HEIGHT);
+				grad.addColorStop(0,"#2299DD");
+				grad.addColorStop(1,"#0F24AC");
+				// Background
+				ctx.fillStyle = grad;
+				ctx.fillRect(0,0,this.WIDTH,this.HEIGHT);
+				// Text
+				ctx.textAlign = "center";
+				ctx.textBaseline = "middle";
+				ctx.fillStyle = "#B90606";
+				ctx.font = "40pt Fascinate";
+				ctx.fillText("Game over!",this.WIDTH/2,200);
+				ctx.font = "25pt Fascinate";
+				ctx.fillText("Final Score: " + this.score,this.WIDTH/2,300);
+				ctx.fillText("Final Round Count: " + this.roundCount,this.WIDTH/2,350);
+
+				ctx.restore();
 			break;
 		}
 		ctx.restore();
