@@ -8,7 +8,7 @@
 var app = app || {};
 
 app.Bullet = function(){
-	
+
 	function Bullet(x,y,radius,speed,color){
 		this.x = x;
 		this.y = y;
@@ -16,22 +16,25 @@ app.Bullet = function(){
 		this.speed = speed;
 		this.fill = color;
 	}
-	
+
 	var proto = Bullet.prototype;
-	
+
 	proto.update = function(dt){
-		this.y += this.speed * dt;
+		this.y += this.speed * dt*10;
 	}
-	
+
 	proto.checkCollision = function(other){
-		var dist = this.x*this.x + this.y*this.y;
-		if(dist <= this.radius+other.radius){
+		var dx = (other.x-this.x)*(other.x-this.x);
+		var dy = (other.y-this.y)*(other.y-this.y);
+		var dist = dx+dy;
+		var test = this.radius+other.radius;
+		if(dist <= test*test){
 			return true;
 		}else{
 			return false;
 		}
 	}
-	
+
 	proto.draw = function(ctx){
 		ctx.save();
 		ctx.fillStyle = this.fill;
@@ -40,6 +43,6 @@ app.Bullet = function(){
 		ctx.fill();
 		ctx.restore();
 	}
-	
+
 	return Bullet
 }();
