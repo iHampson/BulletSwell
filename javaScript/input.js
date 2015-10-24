@@ -25,7 +25,7 @@ app.Input = function(){
 
 	// event listeners
 	window.addEventListener("keydown",function(e){
-	//	console.log("keydown=" + e.keyCode);
+		console.log("keydown=" + e.keyCode);
 		Input.keydown[e.keyCode] = true;
 	});
 
