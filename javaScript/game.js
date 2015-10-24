@@ -47,6 +47,15 @@ app.game = {
 		  and launches the update loop */
 	init: function(){
 		window.addEventListener("keyup",this.checkDebug);
+		document.querySelector("#startButton").onclick = function(){
+			console.log("button pressed");
+			app.game.gameState = 1;
+			this.style.display = "none";
+		};
+		document.querySelector("#restartButton").onclick = function(){
+			app.game.gameState = 1;
+			this.style.display = "none";
+		};
 		this.canvas = document.querySelector('canvas');
 		this.canvas.width = this.WIDTH;
 		this.canvas.height = this.HEIGHT;
@@ -70,6 +79,7 @@ app.game = {
 
 		// Menu State Logic
 		if(this.gameState === this.GAME_STATE.MENU){
+			document.querySelector("#startButton").style.display = "inline";
 			this.drawHUD(this.ctx);
 		} else
 		// Game Loop Logic
@@ -101,6 +111,7 @@ app.game = {
 		} else
 		// End Screen Logic
 		if(this.gameState === this.GAME_STATE.GAME_END){
+			document.querySelector("#restartButton").style.display = "inline";
 			this.drawHUD(this.ctx,dt);
 		}
 
@@ -144,11 +155,7 @@ app.game = {
 				ctx.fillText("Bullet Swell!",this.WIDTH/2,200);
 				ctx.font = "25pt Fascinate";
 				ctx.fillText("A basic bullet hell by: Ian Hampson",this.WIDTH/2,300);
-
-				//debugger; NEED TO FIX HOW BUTTONS ARE HANDELED AND DRAWN
-				document.getElementById("startButton").style.top = 350;
-				document.getElementById("startButton").style.left = this.WIDTH/2;
-				document.getElementById("startButton").style.display = "block";
+				
 				ctx.restore();
 			break;
 			case this.GAME_STATE.PLAYING:
