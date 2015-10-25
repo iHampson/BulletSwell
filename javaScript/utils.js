@@ -11,3 +11,8 @@
 function clamp(val, min, max){
     return Math.max(min, Math.min(max,val));
 }
+
+/* Function pulled from MDN example of usage for Math.random */
+function getRandomInt(min, max){
+  return Math.floor(Math.random() * (max - min)) + min;
+}

@@ -42,6 +42,34 @@ app.game = {
 		PLAYING: 1,
 		GAME_END: 2,
 	}),
+	currentLevel: 0,
+	levels: [
+		// Level 1
+		{
+			enemyCount: 1,
+			blasterCount: 0,
+		},
+		// Level 2
+		{
+			enemyCount: 6,
+			blasterCount: 0
+		},
+		// Level 3
+		{
+			enemyCount: 12,
+			blasterCount: 0
+		},
+		// Level 4
+		{
+			enemyCount: 5,
+			blasterCount: 5
+		},
+		// Level 5
+		{
+			enemyCount: 10,
+			blasterCount: 5
+		}
+	],
 
 	/*	Initializes the game variables
 		  and launches the update loop */
@@ -63,9 +91,10 @@ app.game = {
 
 		this.player = new this.playerCharacter(this.WIDTH/2, this.HEIGHT-40, 90);
 
-		this.genEnemies(1,0);
+		//this.genEnemies(1,0);
+		this.nextLevel();
 
-		this.gameState = 2; // Controls which state the program starts in
+		// this.gameState = 0;  Controls which state the program starts in
 
 		console.log("game's init successfully called.");
 		this.update();
@@ -76,6 +105,13 @@ app.game = {
 		this.animationID = requestAnimationFrame(this.update.bind(this));
 		// setting dt
 		var dt = this.calculateDeltaTime();
+
+		if(this.enemies.length == 0 && this.gameState != this.GAME_STATE.GAME_END){
+			debugger;
+			//this.gameState = this.GAME_STATE.GAME_END;
+			//this.drawHUD(this.ctx,dt);
+			this.nextLevel();
+		}
 
 		// Menu State Logic
 		if(this.gameState === this.GAME_STATE.MENU){
@@ -88,14 +124,11 @@ app.game = {
 				this.drawPauseScreen(this.ctx);
 				return;
 			}
-
-
 			// Updates
 
 				// moves and checks for collisions
 			this.moveBullets(dt);
 			this.moveEntities(dt);
-
 			// Draw Calls
 
 				// background
@@ -179,6 +212,7 @@ app.game = {
 				ctx.fillText("Score: " + this.score, 30, 50);
 			break;
 			case this.GAME_STATE.GAME_END:
+			debugger;
 				// Draw an end game screen
 				ctx.save();
 				//	Setting up the gradient
@@ -263,7 +297,7 @@ app.game = {
 					console.log("Collison successfully");
 					this.score += 5;
 					toDestroy = true;
-					//this.enemies.splice(j,1);
+					this.enemies.splice(j,1);
 				}
 			}
 
@@ -328,8 +362,50 @@ app.game = {
 	genEnemies: function(numEnemies,numBlasters){
 		this.enemies.length = 0;
 		for(var i = 0; i < numEnemies; i++){
-			this.enemies.push(new this.enemyCharacter(this.WIDTH/2,20, 10));
+			this.enemies.push(new this.enemyCharacter(getRandomInt(100,this.WIDTH-100),
+												getRandomInt(40, 200), 10));
 		}
+		/*for(var j=0; j<numBlasters; j++){
+			this.enemies[j].arm();
+		}*/
+	},
+
+	nextLevel: function(){
+		switch(this.currentLevel){
+			case 0:
+				this.gameState = this.GAME_STATE.MENU;
+			break;
+			case 1:
+				var thisLevel = this.levels[this.currentLevel-1];
+				this.genEnemies(thisLevel.enemyCount,thisLevel.blasterCount);
+				this.roundCount++;
+			break;
+			case 2:
+				var thisLevel = this.levels[this.currentLevel-1];
+				this.genEnemies(thisLevel.enemyCount,thisLevel.blasterCount);
+				this.roundCount++;
+			break;
+			case 3:
+				var thisLevel = this.levels[this.currentLevel-1];
+				this.genEnemies(thisLevel.enemyCount,thisLevel.blasterCount);
+				this.roundCount++;
+			break;
+			case 4:
+				var thisLevel = this.levels[this.currentLevel -1];
+				this.genEnemies(thisLevel.enemyCount,thisLevel.blasterCount);
+				this.roundCount++;
+			break;
+			case 5:
+				var thisLevel = this.levels[this.currentLevel -1];
+				this.genEnemies(thisLevel.enemyCount,thisLevel.blasterCount);
+				this.roundCount++;
+			break;
+			default:
+				this.gameState = this.GAME_STATE.GAME_END;
+				this.currentLevel = -1;
+			break;
+		}
+		this.currentLevel++;
 	}
 
 }
