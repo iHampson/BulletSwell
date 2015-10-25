@@ -33,7 +33,8 @@ app.game = {
 
 //	Game data variables
 	player: undefined,
-	bullets: [],
+	playerBullets: [],
+	enemyBullets: [],
 	enemyNumber: 0,
 	enemies: [],
 	gameState: undefined,
@@ -61,13 +62,13 @@ app.game = {
 		},
 		// Level 4
 		{
-			enemyCount: 5,
-			blasterCount: 5
+			enemyCount: 1,
+			blasterCount: 1
 		},
 		// Level 5
 		{
-			enemyCount: 10,
-			blasterCount: 5
+			enemyCount: 5,
+			blasterCount: 2
 		}
 	],
 
@@ -106,8 +107,8 @@ app.game = {
 		// setting dt
 		var dt = this.calculateDeltaTime();
 
-		if(this.enemies.length == 0 && this.gameState != this.GAME_STATE.GAME_END){
-			debugger;
+		if(this.enemies.length == 0 && this.gameState === this.GAME_STATE.PLAYING){
+			//debugger;
 			//this.gameState = this.GAME_STATE.GAME_END;
 			//this.drawHUD(this.ctx,dt);
 			this.nextLevel();
@@ -127,20 +128,21 @@ app.game = {
 			// Updates
 
 				// moves and checks for collisions
-			this.moveBullets(dt);
-			this.moveEntities(dt);
-			// Draw Calls
+			if(this.moveBullets(dt)){
+				this.moveEntities(dt);
+				// Draw Calls
 
-				// background
-			this.ctx.fillStyle = "black";
-			this.ctx.fillRect(0,0,this.WIDTH,this.HEIGHT);
+					// background
+				this.ctx.fillStyle = "black";
+				this.ctx.fillRect(0,0,this.WIDTH,this.HEIGHT);
 
-				// Entities
-			this.drawEntities(this.ctx);
-			this.drawBullets(this.ctx);
+					// Entities
+				this.drawEntities(this.ctx);
+				this.drawBullets(this.ctx);
 
-				// HUD
-			this.drawHUD(this.ctx, dt);
+					// HUD
+				this.drawHUD(this.ctx, dt);
+			}
 		} else
 		// End Screen Logic
 		if(this.gameState === this.GAME_STATE.GAME_END){
@@ -160,8 +162,12 @@ app.game = {
 	},
 
 	drawBullets: function(ctx){
-		for(var b=0; b< this.bullets.length; b++){
-			var bull = this.bullets[b];
+		for(var b=0; b< this.playerBullets.length; b++){
+			var bull = this.playerBullets[b];
+			bull.draw(ctx);
+		}
+		for(var b=0; b< this.enemyBullets.length; b++){
+			var bull = this.enemyBullets[b];
 			bull.draw(ctx);
 		}
 	},
@@ -212,7 +218,7 @@ app.game = {
 				ctx.fillText("Score: " + this.score, 30, 50);
 			break;
 			case this.GAME_STATE.GAME_END:
-			debugger;
+				// debugger;
 				// Draw an end game screen
 				ctx.save();
 				//	Setting up the gradient
@@ -277,23 +283,24 @@ app.game = {
 	},
 
 	moveBullets: function(dt){
-		for(var i=0; i< this.bullets.length; i++){
-			var bull = this.bullets[i];
+		// Loops through the playerBullets array
+		for(var i=0; i< this.playerBullets.length; i++){
+			var pBull = this.playerBullets[i];
 			var toDestroy = false;
 			// Move
-			bull.update(dt);
+			pBull.update(dt);
 			// debugger;
 			// Check Edge
-			if(bull.x < 0 || bull.y < 0 || bull.x > this.WIDTH || bull.y > this.HEIGHT){
+			if(pBull.x < 0 || pBull.y < 0 || pBull.x > this.WIDTH || pBull.y > this.HEIGHT){
 				//console.log("This has left the screen");
 				//console.log(bull);
-				this.bullets.splice(i,1);
+				this.playerBullets.splice(i,1);
 				continue;
 			}
 
 			// Check Collisions
 			for(var j=0; j < this.enemies.length; j++){
-				if(bull.checkCollision(this.enemies[j])){
+				if(pBull.checkCollision(this.enemies[j])){
 					console.log("Collison successfully");
 					this.score += 5;
 					toDestroy = true;
@@ -302,9 +309,35 @@ app.game = {
 			}
 
 			if(toDestroy)
-				this.bullets.splice(i,1);
+				this.playerBullets.splice(i,1);
 
 		}
+
+		// Loops through the enemyBullets array
+		for(var i=0; i< this.enemyBullets.length; i++){
+			var eBull = this.enemyBullets[i];
+			var toDestroy = false;
+			// Move
+			eBull.update(dt);
+			// Check Edge
+			if(eBull.x < 0 || eBull.y < 0 || eBull.x > this.WIDTH || eBull.y > this.HEIGHT){
+				this.enemyBullets.splice(i,1);
+				continue;
+			}
+
+			// Check Collisions
+			debugger;
+			if(eBull.checkCollision(this.player)){
+					console.log("You've been shot!");
+					this.enemies.length = 0;
+					this.playerBullets.length = 0;
+					this.enemyBullets.length = 0;
+					this.gameState = this.GAME_STATE.GAME_END;
+					this.currentLevel = -1;
+					return false;
+				}
+		}
+		return true;
 	},
 
 	moveEntities: function(dt){
@@ -355,19 +388,28 @@ app.game = {
 				app.game.debugging = true;
 			}
 		}else if (char === "a" || char === "A") { // the bullet array
-			console.log(app.game.bullets);
+			console.log("Player bullets:");
+			console.log(app.game.playerBullets);
+			console.log("Enemy bullets:");
+			console.log(app.game.enemyBullets);
+			console.log("Enemies array:");
+			console.log(app.game.enemies);
 		}
 	},
 
 	genEnemies: function(numEnemies,numBlasters){
 		this.enemies.length = 0;
 		for(var i = 0; i < numEnemies; i++){
-			this.enemies.push(new this.enemyCharacter(getRandomInt(100,this.WIDTH-100),
-												getRandomInt(40, 200), 10));
+			var x = getRandomInt(100,this.WIDTH-100);
+			var y = getRandomInt(40, 200);
+			var speed = getRandomInt(10,30);
+			this.enemies.push(new this.enemyCharacter(x,y,speed));
 		}
-		/*for(var j=0; j<numBlasters; j++){
+		// Arms some of the enemies
+		for(var j=0; j<numBlasters; j++){
 			this.enemies[j].arm();
-		}*/
+		}
+
 	},
 
 	nextLevel: function(){

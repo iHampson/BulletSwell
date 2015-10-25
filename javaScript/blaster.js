@@ -15,6 +15,7 @@ app.Blaster = function(){
 	// Type: what kind of blaster is this(cannon, mutiShot, shotgun)
 	// Spread: how spread out should the shouts be from each other
 	// Rate: rate of fire
+	// Dir: direction to shoot + is down, - is up
 	function Blaster(shots, type, spread, rate, dir){
 		this.shotNumber = shots;
 		this.type = type;
@@ -27,29 +28,29 @@ app.Blaster = function(){
 
 	var proto = Blaster.prototype;
 
-	proto.shoot = function(ship){
+	proto.shoot = function(ship,destination){
 
 		if(this.ready){
 			switch(this.type){
 				case "cannon":
-					app.game.bullets.push(new app.game.bullet(ship.x,ship.y,40,10*this.dir,'#F28080'));
+					destination.push(new app.game.bullet(ship.x,ship.y,40,10*this.dir,'#F28080'));
 					this.ready = false;
-					console.log("bullet Fired");
+					//console.log("bullet Fired");
 					break;
 				case "multishot":
 					for(var i=0; i < shots;i++){
-						app.game.bullets.push(new app.game.bullet((ship.x - spread/2)+i*spread/2,ship.y,8,15*this.dir,'#00E600'));
+						destination.push(new app.game.bullet((ship.x - spread/2)+i*spread/2,ship.y,8,15*this.dir,'#00E600'));
 					}
 					this.ready = false;
-					console.log("bullet Fired");
+					//console.log("bullet Fired");
 					break;
 				default:
-					app.game.bullets.push(new app.game.bullet(ship.x,ship.y,10,15*this.dir,'white'));
+					destination.push(new app.game.bullet(ship.x,ship.y,10,15*this.dir,'white'));
 					this.ready = false;
-					console.log("bullet Fired");
+					//console.log("bullet Fired");
 			}
 		}else{
-			console.log("Blaster not ready. " + this.reload.toFixed(2) + " seconds remaining");
+			//console.log("Blaster not ready. " + this.reload.toFixed(2) + " seconds remaining");
 		}
 	}
 

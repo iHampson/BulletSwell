@@ -13,24 +13,36 @@ app.Enemy = function(){
 	Enemy.prototype = new app.Entity();
 	Enemy.prototype.constructor = Enemy;
 
+	// xPos: X coordinate
+	// yPos: Y coordinate
+	// rush: Movement speed
 	function Enemy(xPos,yPos,rush){
 		this.x = xPos;
 		this.y = yPos;
 		this.speed = rush;
 		this.type = "Enemy";
 		this.radius = 40;
-		this.moveDir = "right";
+		this.moveDir = undefined;
+		this.blaster = undefined;
+		this.armed = false;
+
+		var dir = Math.random() * 100;
+		if(dir%2 === 1){
+			this.moveDir = "left";
+		}else{
+			this.moveDir = "right";
+		}
 	}
 
 	Enemy.prototype.update = function(dt){
-	//	debugger;
-		switch(this.moveDir){
-			case "left":
-				this.move(dt);
-				break;
-			case "right":
-				this.move(dt);
-				break;
+		//	debugger;
+		// Auto Movement, always down and left or right
+		this.move(dt);
+
+		// Reload blaster and attempt to fire
+		if(this.blaster != undefined){
+			this.blaster.update(dt);
+			this.blaster.shoot(this,app.game.enemyBullets);
 		}
 
 		if(this.x >= app.game.WIDTH - 70){
@@ -40,16 +52,11 @@ app.Enemy = function(){
 			this.moveDir = "right";
 		}
 
+
 	}
 
 	Enemy.prototype.move = function(dt){
 		switch(this.moveDir){
-			case "up":
-				this.y -= this.speed * dt;
-			break;
-			case "down":
-				this.y += this.speed * dt;
-			break;
 			case "left":
 				this.x -= this.speed * dt;
 			break;
@@ -58,6 +65,9 @@ app.Enemy = function(){
 			break;
 		}
 
+		if(this.armed === false){
+			this.y += this.speed * dt;
+		}
 	}
 
 	Enemy.prototype.draw = function(ctx){
@@ -73,6 +83,12 @@ app.Enemy = function(){
 			ctx.fill();
 			ctx.stroke();
 		ctx.restore();
+	}
+
+	// An arm function to give enemies blasters
+	Enemy.prototype.arm = function(){
+		this.armed = true;
+		this.blaster = new app.Blaster(1,"base",0,12,1);
 	}
 
 	return Enemy;

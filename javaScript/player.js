@@ -15,6 +15,7 @@ app.Player = function(){
 	function Player(xPos,yPos,rush){
 		this.x = xPos;
 		this.y = yPos;
+		this.radius = 25;
 		this.speed = rush;
 		this.type = "Player";
 		this.cannon = new app.Blaster(1,"base",0,5,-1);
@@ -57,7 +58,7 @@ app.Player = function(){
 
 		// Check for user input [Shooting]
 		if(keys.keydown[keys.KEYBOARD.KEY_SPACE]){
-			this.cannon.shoot(this);
+			this.cannon.shoot(this,app.game.playerBullets);
 		}
 
 	}
@@ -69,7 +70,7 @@ app.Player = function(){
 		ctx.strokeStyle = "blue";
 
 		ctx.beginPath();
-		ctx.arc(this.x, this.y, 30, 0,Math.PI*2);
+		ctx.arc(this.x, this.y, this.radius, 0,Math.PI*2);
 
 		ctx.fill();
 		ctx.stroke();
