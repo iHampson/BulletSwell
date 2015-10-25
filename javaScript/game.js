@@ -63,9 +63,9 @@ app.game = {
 
 		this.player = new this.playerCharacter(this.WIDTH/2, this.HEIGHT-40, 90);
 
-		this.enemies.push(new this.enemyCharacter(this.WIDTH/2,15, 10));
+		this.genEnemies(1,0);
 
-		this.gameState = 0; // Controls which state the program starts in
+		this.gameState = 2; // Controls which state the program starts in
 
 		console.log("game's init successfully called.");
 		this.update();
@@ -147,7 +147,7 @@ app.game = {
 				// Background
 				ctx.fillStyle = grad;
 				ctx.fillRect(0,0,this.WIDTH,this.HEIGHT);
-				// Text
+				// Title Text
 				ctx.textAlign = "center";
 				ctx.textBaseline = "middle";
 				ctx.fillStyle = "#DB880C";
@@ -155,7 +155,13 @@ app.game = {
 				ctx.fillText("Bullet Swell!",this.WIDTH/2,200);
 				ctx.font = "25pt Fascinate";
 				ctx.fillText("A basic bullet hell by: Ian Hampson",this.WIDTH/2,300);
-				
+				// Instruction Text
+				ctx.font = "20pt Fascinate";
+				ctx.fillStyle = "black";
+				ctx.fillText("Instructions:",this.WIDTH/2,550);
+				ctx.font = "16pt Fascinate";
+				ctx.fillText("Move with the arrow keys and shoot with the space bar.",this.WIDTH/2,600);
+
 				ctx.restore();
 			break;
 			case this.GAME_STATE.PLAYING:
@@ -177,8 +183,8 @@ app.game = {
 				ctx.save();
 				//	Setting up the gradient
 				var grad = ctx.createLinearGradient(0,0,0,this.HEIGHT);
-				grad.addColorStop(0,"#2299DD");
-				grad.addColorStop(1,"#0F24AC");
+				grad.addColorStop(0,"#11547A");
+				grad.addColorStop(1,"#222536");
 				// Background
 				ctx.fillStyle = grad;
 				ctx.fillRect(0,0,this.WIDTH,this.HEIGHT);
@@ -319,9 +325,11 @@ app.game = {
 		}
 	},
 
-	genEnemies: function(numEnemies){
-		enemies.length = 0;
-
+	genEnemies: function(numEnemies,numBlasters){
+		this.enemies.length = 0;
+		for(var i = 0; i < numEnemies; i++){
+			this.enemies.push(new this.enemyCharacter(this.WIDTH/2,20, 10));
+		}
 	}
 
 }
