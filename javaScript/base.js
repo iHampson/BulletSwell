@@ -28,7 +28,7 @@ window.onblur = function(){
 	app.game.pauseGame();
 }
 
-/*window.onfocus = function(){
+window.onfocus = function(){
 		console.log("Focus at " + Date());
 		app.game.resumeGame();
-	} */
+	}
