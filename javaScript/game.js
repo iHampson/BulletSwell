@@ -98,7 +98,7 @@ app.game = {
 		// this.gameState = 0;  Controls which state the program starts in
 
 		console.log("game's init successfully called.");
-		this.update();
+		this.resumeGame();
 	},
 
 	// The game's loop, updates all objects and draws them to the screen
@@ -246,19 +246,15 @@ app.game = {
 
 	pauseGame: function(){
 		this.paused = true;
-
 		cancelAnimationFrame(this.animationID);
-
-		// will need to stop any sound
+		this.sound.stopBGAudio();
 		this.update();
 	},
 
 	resumeGame: function(){
 		this.paused = false;
-
 		cancelAnimationFrame(this.animationID);
-
-		// will need to restart any audio
+		this.sound.playBGAudio();
 		this.update();
 	},
 

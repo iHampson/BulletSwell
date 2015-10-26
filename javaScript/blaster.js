@@ -31,6 +31,7 @@ app.Blaster = function(){
 	proto.shoot = function(ship,destination){
 
 		if(this.ready){
+			app.game.sound.playEffect();
 			switch(this.type){
 				case "cannon":
 					destination.push(new app.game.bullet(ship.x,ship.y,40,10*this.dir,'#F28080'));

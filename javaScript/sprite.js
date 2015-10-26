@@ -5,6 +5,7 @@
   sprite class modified lightly from example here:
   http://www.williammalone.com/articles/create-html5-canvas-javascript-sprite-animation/
 */
+"use strict";
 
 function sprite(options){
   var that = {};

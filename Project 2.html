@@ -12,6 +12,9 @@
 			left: 5px;
 			z-index: 1;
 		}
+		#loaders{
+			display: none;
+		}
 
 		button{
 			font-family: "Fascinate";
@@ -41,13 +44,11 @@
 		#playerSheet{
 			width: 262px;
 			height: 263px;
-			display: none;
 		}
 
 		#enemySheet{
 			width: 257px;
 			height: 93px;
-			display: none;
 		}
 
 	</style>
@@ -67,9 +68,9 @@
 	<script src='javaScript/bullet.js'></script>
 	<script src='javaScript/input.js'></script>
 	<script src='javaScript/sprite.js'></script>
+	<script src='javaScript/sound.js'></script>
 
 	<!--
-	<script src='javaScript/sound.js'></script>
 		<script src='javaScript/loader.js'></script>
 		<script src='javaScript/main.js'></script>
 		<script src='javascript/emitter.js'></script>
@@ -80,10 +81,13 @@
 			<audio id="effectAudio" controls></audio>
 		</section>
 	-->
-
-		<button id="startButton">Start Game</button>
-		<button id="restartButton">Restart</button>
-		<img src="images/playerSheet.png" id="playerSheet">
-		<img src="images/enemySheet.png" id="enemySheet">
+			<button id="startButton">Start Game</button>
+			<button id="restartButton">Restart</button>
+		<div id="loaders">
+			<img src="images/playerSheet.png" id="playerSheet">
+			<img src="images/enemySheet.png" id="enemySheet">
+			<audio id="bgAudio" src="media/Fight-at-the-Carnival.mp3" controls loop></audio>
+			<audio id="effectAudio" controls></audio>
+		</div>
 </body>
 </html>

@@ -10,8 +10,8 @@ var app = app || {};
 window.onload = function(){
 	console.log("window has loaded");
 
-/*
-*/
+	app.sound.init();
+	app.game.sound = app.sound;
 	app.game.entity = app.Entity;
 	app.game.enemyCharacter = app.Enemy;
 	app.game.playerCharacter = app.Player;
