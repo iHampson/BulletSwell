@@ -25,6 +25,11 @@ app.Enemy = function(){
 		this.moveDir = undefined;
 		this.blaster = undefined;
 		this.armed = false;
+		this.sprite = sprite({
+			width: 257,	height: 93,
+			image: document.getElementById('enemySheet'),
+			rows: 1, columns: 3
+		})
 
 		var dir = Math.random() * 100;
 		if(dir%2 === 1){
@@ -35,7 +40,7 @@ app.Enemy = function(){
 	}
 
 	Enemy.prototype.update = function(dt){
-		//	debugger;
+			debugger;
 		// Auto Movement, always down and left or right
 		this.move(dt);
 
@@ -45,10 +50,10 @@ app.Enemy = function(){
 			this.blaster.shoot(this,app.game.enemyBullets);
 		}
 
-		if(this.x >= app.game.WIDTH - 70){
+		if(this.x >= app.game.WIDTH - 50){
 			this.moveDir = "left";
 		}
-		if(this.x <= 70){
+		if(this.x <= 50){
 			this.moveDir = "right";
 		}
 
@@ -73,15 +78,12 @@ app.Enemy = function(){
 	Enemy.prototype.draw = function(ctx){
 		ctx.save();
 
-			ctx.fillStyle = "#BF0B0B";
-			ctx.strokeStyle = "#209CC3";
-			ctx.lineWidth = 3;
+			if(this.moveDir === "right"){
+				this.sprite.render(ctx,this.x-45,this.y-30,2,0,this.radius);
+			}else{
+				this.sprite.render(ctx,this.x-45,this.y-30,0,0,this.radius);
+			}
 
-			ctx.beginPath();
-			ctx.arc(this.x,this.y,this.radius,0,Math.PI*2);
-
-			ctx.fill();
-			ctx.stroke();
 		ctx.restore();
 	}
 

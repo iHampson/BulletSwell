@@ -19,7 +19,15 @@ app.Player = function(){
 		this.speed = rush;
 		this.type = "Player";
 		this.cannon = new app.Blaster(1,"base",0,5,-1);
-	}
+		this.sprite = sprite({
+			width: 262,	height: 263,
+			image: document.getElementById('playerSheet'),
+			rows: 3, columns: 3
+		});
+		this.frameCol = 0;
+		this.frameRow = 0;
+
+		}
 
 	Player.prototype.move = function(dt, direction){
 		switch(direction){
@@ -61,19 +69,32 @@ app.Player = function(){
 			this.cannon.shoot(this,app.game.playerBullets);
 		}
 
+		//Determine which sprite to draw
+		if(keys.keydown[keys.KEYBOARD.KEY_RIGHT] && keys.keydown[keys.KEYBOARD.KEY_UP]){
+			this.frameCol = 1;			this.frameRow = 0;
+		}else if(keys.keydown[keys.KEYBOARD.KEY_RIGHT] && keys.keydown[keys.KEYBOARD.KEY_DOWN]){
+			this.frameCol = 0;			this.frameRow = 1;
+		}else if(keys.keydown[keys.KEYBOARD.KEY_RIGHT] && keys.keydown[keys.KEYBOARD.KEY_LEFT]){
+			this.frameCol = 0;			this.frameRow = 0;
+		}else if(keys.keydown[keys.KEYBOARD.KEY_LEFT] && keys.keydown[keys.KEYBOARD.KEY_UP]){
+			this.frameCol = 1;			this.frameRow = 2;
+		}else if(keys.keydown[keys.KEYBOARD.KEY_LEFT] && keys.keydown[keys.KEYBOARD.KEY_DOWN]){
+			this.frameCol = 2;			this.frameRow = 1;
+		}else if(keys.keydown[keys.KEYBOARD.KEY_UP]){
+			this.frameCol = 0;			this.frameRow = 0;
+		}else if(keys.keydown[keys.KEYBOARD.KEY_DOWN]){
+			this.frameCol = 1;			this.frameRow = 1;
+		}else if(keys.keydown[keys.KEYBOARD.KEY_LEFT]){
+			this.frameCol = 0;			this.frameRow = 2;
+		}else if(keys.keydown[keys.KEYBOARD.KEY_RIGHT]){
+			this.frameCol = 2;			this.frameRow = 0;
+		}
 	}
 
 	Player.prototype.draw = function(ctx){
 		ctx.save();
 
-		ctx.fillStyle = "green";
-		ctx.strokeStyle = "blue";
-
-		ctx.beginPath();
-		ctx.arc(this.x, this.y, this.radius, 0,Math.PI*2);
-
-		ctx.fill();
-		ctx.stroke();
+		this.sprite.render(ctx,this.x,this.y,this.frameCol,this.frameRow,this.radius);
 
 		ctx.restore();
 	}
