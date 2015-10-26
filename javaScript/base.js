@@ -1,4 +1,4 @@
-/*  
+/*
 	Base loader class(file) that will load in other module files and tie them together
     will need to "include" new modules here first to properly tie the files together.
 */
@@ -28,7 +28,7 @@ window.onblur = function(){
 	app.game.pauseGame();
 }
 
-window.onfocus = function(){
-	console.log("Focus at " + Date());
-	app.game.resumeGame();
-}
+/*window.onfocus = function(){
+		console.log("Focus at " + Date());
+		app.game.resumeGame();
+	} */
