@@ -40,7 +40,6 @@ app.Enemy = function(){
 	}
 
 	Enemy.prototype.update = function(dt){
-			debugger;
 		// Auto Movement, always down and left or right
 		this.move(dt);
 

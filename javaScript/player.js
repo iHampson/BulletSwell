@@ -19,6 +19,7 @@ app.Player = function(){
 		this.speed = rush;
 		this.type = "Player";
 		this.cannon = new app.Blaster(1,"base",0,5,-1);
+		this.splash = undefined;
 		this.sprite = sprite({
 			width: 262,	height: 263,
 			image: document.getElementById('playerSheet'),
@@ -94,6 +95,7 @@ app.Player = function(){
 	Player.prototype.draw = function(ctx){
 		ctx.save();
 
+		this.splash.updateAndDraw(ctx,{x: this.x+10, y: this.y});
 		this.sprite.render(ctx,this.x,this.y,this.frameCol,this.frameRow,this.radius);
 
 		ctx.restore();

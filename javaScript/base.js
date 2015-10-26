@@ -17,7 +17,7 @@ window.onload = function(){
 	app.game.playerCharacter = app.Player;
 	app.game.blaster = app.Blaster;
 	app.game.bullet = app.Bullet;
-//	app.game.sound = app.sound;
+	app.game.emitter = app.Emitter;
 	app.game.input = app.Input;
 
 	app.game.init();

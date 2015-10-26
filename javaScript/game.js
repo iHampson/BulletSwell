@@ -24,6 +24,7 @@ app.game = {
 
 //  Module loading
 	entity: undefined,
+	emitter: undefined,
 	enemyCharacter: undefined,
 	playerCharacter: undefined,
 	sound: undefined,
@@ -91,12 +92,24 @@ app.game = {
 		this.ctx = this.canvas.getContext('2d');
 
 		this.player = new this.playerCharacter(this.WIDTH/2, this.HEIGHT-40, 90);
+		var pulsar = new this.emitter();
+		pulsar.blue = 243;
+		pulsar.red = 253;
+		pulsar.green = 249;
+		pulsar.minXspeed = pulsar.minYspeed = -0.25;
+		pulsar.maxXspeed = pulsar.maxYspeed = 0.5;
+		pulsar.lifetime = 100;
+		pulsar.expansionRate = 0.2;
+		pulsar.numParticles = 75;
+		pulsar.xRange = pulsar.yRange = 10;
+		pulsar.useCircles = true;
+		pulsar.useSquares = false;
+		pulsar.createParticles({
+			x: app.game.player.x+10,
+			y: app.game.player.y});
+		this.player.splash = pulsar;
 
-		//this.genEnemies(1,0);
 		this.nextLevel();
-
-		// this.gameState = 0;  Controls which state the program starts in
-
 		console.log("game's init successfully called.");
 		this.resumeGame();
 	},
@@ -133,7 +146,7 @@ app.game = {
 				// Draw Calls
 
 					// background
-				this.ctx.fillStyle = "black";
+				this.ctx.fillStyle = "rgb(8, 72, 108)";
 				this.ctx.fillRect(0,0,this.WIDTH,this.HEIGHT);
 
 					// Entities
@@ -384,12 +397,8 @@ app.game = {
 				app.game.debugging = true;
 			}
 		}else if (char === "a" || char === "A") { // the bullet array
-			console.log("Player bullets:");
-			console.log(app.game.playerBullets);
-			console.log("Enemy bullets:");
-			console.log(app.game.enemyBullets);
-			console.log("Enemies array:");
-			console.log(app.game.enemies);
+			console.log("Player :");
+			console.log(app.game.player);
 		}
 	},
 
