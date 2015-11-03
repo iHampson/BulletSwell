@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<link href='https://fonts.googleapis.com/css?family=Fascinate' rel='stylesheet' type='text/css'>
+	<style>
+
+		canvas{
+			border:1px solid gray;
+			position: absolute;
+			top: 5px;
+			left: 5px;
+			z-index: 1;
+		}
+		#loaders{
+			display: none;
+		}
+
+		button{
+			font-family: "Fascinate";
+			font-size: 24pt;
+		}
+
+		#startButton{
+			position: absolute;
+			top: 400px;
+			left: 275px;
+			width: 150px;
+			height: 125px;
+			z-index: 2;
+			display: none;
+		}
+
+		#restartButton{
+			position:absolute;
+			top: 400px;
+			left: 275px;
+			width: 150px;
+			height: 125px;
+			z-index: 2;
+			display: none;
+		}
+
+		#playerSheet{
+			width: 262px;
+			height: 263px;
+		}
+
+		#enemySheet{
+			width: 257px;
+			height: 93px;
+		}
+
+	</style>
+	<title>Project 2</title>
+</head>
+<body>
+	<canvas>
+		Get a real browser!
+	</canvas>
+	<script src='javaScript/utils.js'></script>
+	<script src='javaScript/base.js'></script>
+	<script src='javaScript/game.js'></script>
+	<script src='javaScript/entity.js'></script>
+	<script src='javaScript/enemy.js'></script>
+	<script src='javaScript/player.js'></script>
+	<script src='javaScript/blaster.js'></script>
+	<script src='javaScript/bullet.js'></script>
+	<script src='javaScript/input.js'></script>
+	<script src='javaScript/sprite.js'></script>
+	<script src='javaScript/sound.js'></script>
+	<script src='javaScript/emitter.js'></script>
+
+	<!--
+		<script src='javaScript/loader.js'></script>
+		<script src='javaScript/main.js'></script>
+		<button id="button1">Click Me</button>
+
+		<section id="audioControls">
+			<audio id="bgAudio" src="media/background.mp3" controls loop></audio>
+			<audio id="effectAudio" controls></audio>
+		</section>
+	-->
+			<button id="startButton">Start Game</button>
+			<button id="restartButton">Restart</button>
+		<div id="loaders">
+			<img src="images/playerSheet.png" id="playerSheet">
+			<img src="images/enemySheet.png" id="enemySheet">
+			<audio id="bgAudio" src="media/Fight-at-the-Carnival.mp3" controls loop></audio>
+			<audio id="effectAudio" controls></audio>
+		</div>
+</body>
+</html>
